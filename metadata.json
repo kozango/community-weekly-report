@@ -1,0 +1,6 @@
+{
+  "name": "コミュニティ週報作成アプリ (Community Weekly Report Generator)",
+  "description": "A web application for community managers to efficiently generate weekly reports from community activity data in CSV format. It automates the manual report creation process, enabling the generation of high-quality, standardized reports in a short amount of time.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
