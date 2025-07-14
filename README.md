@@ -1,14 +1,58 @@
-# Run and deploy your AI Studio app
+# コミュニティ週報作成アプリ
 
-This contains everything you need to run your app locally.
+このアプリケーションは、コミュニティ（Slackなど）からエクスポートしたCSVファイルを元に、AIを活用して週報のMarkdownを自動生成するツールです。
 
-## Run Locally
+## 主な機能
 
-**Prerequisites:**  Node.js
+- **CSV自動解析**: 投稿データを分析し、会話のスレッド構造やエンゲージメントを自動で算出します。
+- **AIによる要約**: GoogleのGemini APIを利用して、盛り上がったトピックのタイトルと要約を自動生成します。
+- **エリア別ランキング**: 一般エリア・有料エリアなど、投稿があったチャンネルの種類に応じてハイライトを分けて表示します。
+- **Markdown生成**: 整形された週報をMarkdown形式で出力し、ワンクリックでコピーできます。
 
+## ワークフロー
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+1.  **アップロード**: Slack等からエクスポートしたCSVファイルをアップロードします。
+2.  **分析**: アプリがCSVデータを解析し、スレッド単位でエンゲージメントスコアを計算します。
+3.  **AI要約**: スコアの高いスレッドをAIが要約し、タイトルと紹介文を生成します。
+4.  **レポート生成**: 分析結果とAIの要約を元に、週報のMarkdownを生成します。
+5.  **コピー＆ペースト**: 生成された週報をコピーし、日報やSlack投稿などに活用します。
+
+## セットアップと実行方法
+
+**前提条件:** [Node.js](https://nodejs.org/) がインストールされていること。
+
+1.  **依存パッケージのインストール**:
+    ```bash
+    npm install
+    ```
+
+2.  **APIキーの設定**:
+    プロジェクトのルートに `.env.local` という名前のファイルを作成し、以下のようにお使いのGoogle Gemini APIキーを設定します。
+
+    ```
+    GEMINI_API_KEY="ここにあなたのAPIキーを貼り付け"
+    ```
+
+3.  **開発サーバーの起動**:
+    ```bash
+    npm run dev
+    ```
+
+4.  **ブラウザで開く**:
+    ターミナルに表示されたURL（例: `http://localhost:5173`）をブラウザで開きます。
+
+## CSVファイルの仕様
+
+本ツールが正しく動作するためには、CSVファイルに以下のカラムが含まれている必要があります。
+
+- `poster_name`
+- `post_datetime`
+- `message`
+- `channel_name`
+- `reaction_count`
+- `reply_count`
+- `comment_url`
+- `message_type` (値: `parent` または `reply`)
+- `parent_id` (リプライの場合、親投稿のID)
+- `user_type` (値: `有料` など)
+- `channel_type` (値: `限定` など)
